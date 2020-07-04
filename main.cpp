@@ -5,33 +5,66 @@ using std::endl;
 #include <string>
 using std::string;
 #include <conio.h>
+#include <vector>
+using std::vector;
+#include <cmath>
+using std::sqrt;
 #include "Stack.h"
 #include "Matriz.h"
 
-int main(){
-	int opcion;
-	Stack* stack = new Stack();
-	while(true){
-		cout << "1. Hacer pop de la pila y guardar en operando1" << endl
-		<< "2. Hacer pop de la pila y guardar en operador" << endl
-		<< "3. Hacer pop de la pila y guardar en operando1" << endl
-		<< "4. Evaluar la expresión operando1 <operador> operando2" << endl
-		<< "5. Hacer push a la pila del resultado de la operación del paso anterior" << endl
-		<< "6. Repetir el proceso hasta que solo quede un elemento en la pila." << endl
-		<< "7. Salir" << endl
-		<< "Ingrese opcion: ";
-		cin >> opcion;
-		
-		cout << endl;
-		
-		switch(opcion){
-			case 7:{
-				exit(0);
-			}
-		}
+vector<int**> matrices;
+
+bool comandoValido(string comando){
+	int contCorchetes = 0;
+	int contNumeros = 0;
+	int contComas = 0;
+	for(char c:comando){
+		if(c==']'||c=='[')
+			contCorchetes++;
+		if(c > 47 && c < 58)
+			contNumeros++;	
+		if(c==',')
+			contComas++;	
 	}
 	
-	delete stack;
+	if(contCorchetes==2 && contNumeros>0 && contComas == contNumeros-1 && comando[1] == '=')
+		return true;
+	else
+		return false;	
+}
+bool hasSqrt(int numero){
+	for(int i=0;i<numero;i++)
+		if(i*i == numero)
+			return true;
+	
+	return false;		
+}
+
+void imprimirMatriz(int** matriz,int size){
+	for(int i=0;i<size;i++){
+		for(int j=0;j<size;j++)
+			cout << "[" << matriz[i][j] << "] ";
+		cout << endl;	 
+	}
+}
+
+int main(){
+	while(true){
+		string comando;
+		cout << ">>";
+		cin>>comando;
+		if(comandoValido(comando)){
+		
+			Matriz* matriz = new Matriz(comando,comando[0]);
+			if(hasSqrt(matriz->getNumeros().size()))
+				imprimirMatriz(matriz->matrizPrimitiva(),sqrt(matriz->getNumeros().size()));
+			else
+				cout << "Debe ingresar una matriz cuadrada" << endl;	
+			
+		}else{
+			cout << "Comando invalido" << endl;
+		}
+	}
 	
 	return 0;
 }

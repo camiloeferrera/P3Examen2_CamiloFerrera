@@ -13,9 +13,10 @@ using std::sqrt;
 class Matriz : public Object
 {
 	public:
-		Matriz(string cadena){
+		Matriz(string cadena,char nombre){
 			this->cadena=cadena;
 			makeVector();
+			this->nombre=nombre;
 		}
 		~Matriz();
 		
@@ -51,6 +52,7 @@ class Matriz : public Object
 	protected:
 		string cadena;
 		vector<int> numeros;
+		char nombre;
 };
 
 #endif
